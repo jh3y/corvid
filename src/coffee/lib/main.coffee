@@ -1,19 +1,20 @@
-program = require "commander"
-colors = require "colors"
-pkg = require "../package.json"
-corvid = require "./corvid"
+program = require 'commander'
+colors = require 'colors'
+pkg = require '../package.json'
+corvid = require './corvid'
 
 program
   .version(pkg.version)
-  .option "-u, --username [username]", "git username to be browsed"
-  .option "-o, --organisation [organisation]", "git organisation to be browsed"
-  .option "-c, --clone", "provide interactive cloning"
-  .option "-d, --detailed", "return repo details"
+  .option '-a, --all', 'use if more than 100 repos'
+  .option '-u, --username [username]', 'git username to be browsed'
+  .option '-o, --organisation [organisation]', 'git organisation to be browsed'
+  .option '-c, --clone', 'provide interactive cloning'
+  .option '-d, --detailed', 'return repo details'
 
-program.on "--help", ->
-  console.log "  Examples:"
-  console.log ""
-  console.log "    $ " + pkg.name + " --browse jh3y"
+program.on '--help', ->
+  console.log '  Examples:'
+  console.log '""'
+  console.log '    $ ' + pkg.name + ' --browse jh3y'
   return
 
 program.parse process.argv
@@ -27,5 +28,6 @@ else
       organisation: program.organisation
       clone: program.clone
       detailed: program.detailed
+      all: program.all
   catch err
-    console.log "[", "corvid".white, "]", err.toString().red
+    console.log '[', 'corvid'.white, ']', err.toString().red
