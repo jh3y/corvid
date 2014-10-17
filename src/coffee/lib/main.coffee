@@ -7,7 +7,8 @@ program
   .version(pkg.version)
   .option '-a, --all', 'use if more than 100 repos'
   .option '-u, --username [username]', 'git username to be browsed'
-  .option '-r, --repositories', 'Whether to grab repos'
+  .option '-r, --repos [count]', 'flag for grabbing repos and also defining number of repos for user'
+  .option '-i, --interactive', 'enables interactive search'
   .option '-o, --organisation [organisation]', 'git organisation to be browsed'
   .option '-c, --clone', 'provide interactive cloning of defined user/org repos'
   .option '-d, --detailed', 'return repo details'
@@ -26,7 +27,8 @@ else
   try
     corvid.process
       username: program.username
-      repositories: program.repositories
+      reponame: program.reponame
+      repos: program.repos
       organisation: program.organisation
       clone: program.clone
       detailed: program.detailed
