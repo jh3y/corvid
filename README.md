@@ -1,5 +1,5 @@
 Corvid
 ===
-_ A CLI utility for browsing and cloning multiple repos at once _
+_TBA_
 
 @jh3y 2014
