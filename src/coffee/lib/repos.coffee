@@ -1,5 +1,7 @@
 ###
-# GETREPODATA - Returns function data as array of objects
+#
+# Repos
+#
 ###
 colors = require 'colors'
 request = require 'request'
@@ -15,7 +17,14 @@ errCallback = ( err) ->
   console.log err
 
 
-exports.grab = grab = (gName, grabAll)->
+# The processing function is actually the same just with a different URL and options.
+
+# Essentially both are the same but we just have different rendering functions.
+
+
+
+exports.getResults = getResults = (criteria)->
+  # If repos then repo URL else if user then user URL
   return new promise (resolve, reject) ->
     if grabAll
       requestOptions.url = 'https://api.github.com/search/repositories?q=user:' + gName
