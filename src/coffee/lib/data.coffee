@@ -56,12 +56,9 @@ getUrlParameters = (criteria, qString, order, sort) ->
     if criteria.username and typeof criteria.username is 'string'
       # result += 'user:' + criteria.username
       queryObj.user = criteria.username
-    if criteria.repos
-      if typeof criteria.repos is 'string'
-        # result += '+repo:' + criteria.repos
-        queryObj.repo = criteria.repos
-      else if typeof criteria.repos isnt 'boolean' and typeof(parseInt criteria.repos, 10) is 'number'
+    if criteria.repos and typeof criteria.repos isnt 'boolean' and !isNaN parseInt(criteria.repos, 10)
         # result += '+repos:%3E' + criteria.repos
+        console.log typeof(parseInt(criteria.repos, 10))
         queryObj.repos = '%3E' + criteria.repos
     if criteria.location and typeof criteria.location is 'string'
       # result += '+location:' + criteria.location.replace regex, '%2B'
@@ -80,6 +77,8 @@ getUrlParameters = (criteria, qString, order, sort) ->
       queryObj.stars = '%3E' + criteria.stars
     # TODO: Add created, size to query string
     result = 'q='
+    if typeof criteria.repos is 'string' and isNaN parseInt(criteria.repos, 10)
+      result = 'q=' + criteria.repos
     for key of queryObj
       if result is 'q='
         result += key + ':' + queryObj[key]
@@ -113,8 +112,8 @@ getRequestOptions = (criteria) ->
       'User-Agent': 'request'
   if criteria.all and criteria.username and typeof criteria.username is 'string' and criteria.repos
     requestOptions.url = urlBase + 'repositories?q=user:' + criteria.username + getUrlParameters criteria, false, false, false
-  else if criteria.repos
-    requestOptions.url = urlBase + 'repositories?'+ repoName + urlParameters
+  else if criteria.repos and isNaN parseInt(criteria.repos, 10)
+    requestOptions.url = urlBase + 'repositories?' + urlParameters
   else
     requestOptions.url = urlBase + 'users?' + userName + urlParameters
   requestOptions
@@ -133,16 +132,21 @@ exports.getResults = getResults = (criteria)->
   console.log 'grabbing data with ', criteria
   return new promise (resolve, reject) ->
     requestOptions = getRequestOptions criteria
+    reposRequest = (if (requestOptions.url.indexOf('repos') isnt -1) then true else false)
     requestCallback = `undefined`
     if criteria.all and criteria.username and typeof criteria.username is 'string' and criteria.repos
       requestCallback = (data) ->
         response = JSON.parse data
         pages = Math.ceil response.total_count / criteria.limit
         grabPaged(requestOptions, pages).then (data) ->
-          resolve data
+          resolve
+            data: data
+            renderAsRepos: reposRequest
     else
       requestCallback = (data) ->
-        resolve JSON.parse data
+        resolve
+          data: JSON.parse data
+          renderAsRepos: reposRequest
     errCallback = getErrCallback()
     console.log requestOptions.url, 'is where we are going'
     grab(requestOptions).then requestCallback, errCallback
