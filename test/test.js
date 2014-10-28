@@ -1,13 +1,15 @@
 (function() {
-  var assert, corvid;
+  var assert, corvid, expect;
 
-  assert = require("assert");
+  assert = require('assert');
 
-  corvid = require("../lib/corvid");
+  expect = require('chai').expect;
 
-  suite("corvid", function() {
-    return suite("browse", function() {
-      return test("should throw an error when empty options", function() {
+  corvid = require('../lib/corvid');
+
+  suite('corvid', function() {
+    return suite('process', function() {
+      return test('should throw an error when empty options', function() {
         return assert.throws((function() {
           return corvid.browse();
         }), Error);

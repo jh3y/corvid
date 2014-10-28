@@ -76,11 +76,11 @@ getUrlParameters = (criteria, qString, order, sort) ->
       # result += '+stars:%3E' + criteria.stars
       queryObj.stars = '%3E' + criteria.stars
     # TODO: Add created, size to query string
-    result = 'q='
+    result = '&q='
     if typeof criteria.repos is 'string' and isNaN parseInt(criteria.repos, 10)
-      result = 'q=' + criteria.repos
+      result = '&q=' + criteria.repos
     for key of queryObj
-      if result is 'q='
+      if result is '&q='
         result += key + ':' + queryObj[key]
       else
         result += '+' + key + ':' + queryObj[key]
@@ -102,20 +102,30 @@ getUrlParameters = (criteria, qString, order, sort) ->
     parameterString += '&per_page=' + resPageLimit
   parameterString
 
+
+hasCriteria = (criteria) ->
+  hasCriteria = false
+  if criteria.location or criteria.language or criteria.followers or criteria.forks or criteria.stars
+    hasCriteria = true
+  else
+    hasCriteria = false
+  hasCriteria
+
 getRequestOptions = (criteria) ->
-  urlBase = 'https://api.github.com/search/'
+  urlBase = 'https://api.github.com/'
   urlParameters = getUrlParameters criteria, true, true, true
   repoName = (if (typeof criteria.repos is 'string') then criteria.repos + '&' else '')
-  userName = (if (typeof criteria.username is 'string') then criteria.username + '&' else '')
   requestOptions =
     headers:
       'User-Agent': 'request'
   if criteria.all and criteria.username and typeof criteria.username is 'string' and criteria.repos
-    requestOptions.url = urlBase + 'repositories?q=user:' + criteria.username + getUrlParameters criteria, false, false, false
+    requestOptions.url = urlBase + 'search/repositories?q=user:' + criteria.username + getUrlParameters criteria, false, false, false
   else if criteria.repos and isNaN parseInt(criteria.repos, 10)
-    requestOptions.url = urlBase + 'repositories?' + urlParameters
-  else
-    requestOptions.url = urlBase + 'users?' + userName + urlParameters
+    requestOptions.url = urlBase + 'search/repositories?' + urlParameters
+  else if criteria.username and hasCriteria criteria
+    requestOptions.url = urlBase + 'search/users?' + criteria.username + urlParameters
+  else if criteria.username
+    requestOptions.url = urlBase + 'users/' + criteria.username
   requestOptions
 
 getErrCallback = ->

@@ -34,10 +34,11 @@
   },
   "keywords": [],
   "devDependencies": {
+    "chai": "^1.9.2",
     "gulp": "^3.6.1",
     "gulp-coffee": "^1.4.2",
     "gulp-plumber": "^0.6.1",
-    "mocha": "^1.18.2",
+    "mocha": "^2.0.1",
     "promise": "^6.0.0",
     "request": "^2.45.0"
   }

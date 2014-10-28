@@ -49,7 +49,7 @@ processSearchCriteria = (opts) ->
 ###
 exports.process = process = (options) ->
   searchCriteria = processSearchCriteria options
-  if searchCriteria.repos or searchCriteria.clone or searchCriteria.username or searchCriteria.organisation
+  if searchCriteria.repos or searchCriteria.username
     dataUtil.getResults(searchCriteria).then (data) ->
       renderUtil.renderData data
   else
