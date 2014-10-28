@@ -8,6 +8,7 @@ request = require 'request'
 promise = require 'promise'
 pkg = require '../package.json'
 dataUtil = require './data'
+renderUtil = require './render'
 resPageLimit = 100
 
 
@@ -50,8 +51,6 @@ exports.process = process = (options) ->
   searchCriteria = processSearchCriteria options
   if searchCriteria.repos or searchCriteria.clone or searchCriteria.username or searchCriteria.organisation
     dataUtil.getResults(searchCriteria).then (data) ->
-      console.log data, 'RESULT'
-      for item in data.data.items
-        console.log item.name
+      renderUtil.renderData data
   else
     throw new Error 'no username, organisation or repository criteria specified!'
