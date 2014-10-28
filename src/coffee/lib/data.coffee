@@ -120,11 +120,13 @@ getRequestOptions = (criteria) ->
       'User-Agent': 'request'
   if criteria.all and criteria.username and typeof criteria.username is 'string' and criteria.repos
     requestOptions.url = urlBase + 'search/repositories?q=user:' + criteria.username + getUrlParameters criteria, false, false, false
-  else if criteria.repos and isNaN parseInt(criteria.repos, 10)
+  else if criteria.repos and isNaN parseInt(criteria.repos, 10) and typeof criteria.repos is 'boolean'
     requestOptions.url = urlBase + 'search/repositories?' + urlParameters
-  else if criteria.username and hasCriteria criteria
-    requestOptions.url = urlBase + 'search/users?' + criteria.username + urlParameters
-  else if criteria.username
+  else if criteria.repos and isNaN parseInt(criteria.repos, 10) and typeof criteria.repos is 'string'
+    requestOptions.url = urlBase + 'search/repositories?' + criteria.repos + urlParameters
+  else if criteria.username and typeof criteria.username is 'boolean' and hasCriteria criteria
+    requestOptions.url = urlBase + 'search/users?' + urlParameters
+  else if criteria.username and typeof criteria.username is 'string'
     requestOptions.url = urlBase + 'users/' + criteria.username
   requestOptions
 

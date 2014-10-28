@@ -15,17 +15,21 @@ renderRepos = (repoData) ->
 
 renderUsers = (userData) ->
   if userData.items and userData.items.length > 0
-    console.log 'We have USERS'
+    console.log '========================================'.cyan
+    console.log 'Returning users that match your criteria'.white
+    console.log '========================================'.cyan
+    console.log ''
+    console.log ''
     for user in userData.items
-      console.log '#####'.green
-      console.log user.login.red
+      console.log ' '
+      console.log user.login.toUpperCase().red
+      console.log '========================'.red
       console.log 'Type'.white, user.type.cyan
-      console.log 'URL'.white, user.html_url.cyan
-      console.log '#####'.green
+      console.log 'Github Url'.white, user.html_url.cyan
+      console.log ' '
   else if userData.items and userData.items.length is 0
     console.log 'No users match'
   else if userData.login
-    console.log 'We have a USER', userData
     console.log ' '
     console.log userData.name.toUpperCase().red, '(', userData.login.red, ')'
     console.log '========================='.red
