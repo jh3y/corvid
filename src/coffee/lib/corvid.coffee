@@ -50,7 +50,6 @@ exports.process = process = (options) ->
   searchCriteria = processSearchCriteria options
   if searchCriteria.repos or searchCriteria.clone or searchCriteria.username or searchCriteria.organisation
     dataUtil.getResults(searchCriteria).then (data) ->
-      console.log 'hello?'
-      console.log 'RESULT'
+      console.log data, 'RESULT'
   else
     throw new Error 'no username, organisation or repository criteria specified!'
