@@ -11,7 +11,7 @@ program
   .option '-i, --interactive', 'enables interactive search'
   .option '-b, --bare', 'return less information'
   .option '-o, --organisation [organisation]', 'git organisation to be browsed'
-  .option '-c, --clone', 'provide interactive cloning of defined user/org repos'
+  .option '-c, --clone', 'provide interactive cloning of user/org repos'
   .option '--sort [criteria]', 'how to sort results [forks, stars, updated]'
   .option '--order [order]', 'how to order results [asc, desc]'
   .option '-l, --limit [limit]', 'limit the number of results [< 100]'

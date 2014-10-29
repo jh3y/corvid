@@ -1,3 +1,4 @@
+cloneUtils = require './clone'
 ###
 #
 # Rendering Utilities
@@ -26,7 +27,12 @@ renderRepo = (repo, bare) ->
   console.log ''
 
 renderRepos = (repoData, criteria) ->
-  if repoData.items and repoData.items.length > 0
+  if repoData.items and repoData.items.length > 0 and criteria.clone
+    try
+      cloneUtils.process repoData.items
+    catch err
+      console.log '[', 'corvid'.white, ']', err.toString().red
+  else if repoData.items and repoData.items.length > 0
     console.log '========================================'.cyan
     console.log 'Returning repos that match your criteria'.white
     console.log '========================================'.cyan
