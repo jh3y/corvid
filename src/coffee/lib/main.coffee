@@ -9,7 +9,7 @@ program
   .option '-u, --username [username]', 'git username to be browsed'
   .option '-r, --repos [count]', 'flag for grabbing repos and also defining number of repos for user'
   .option '-i, --interactive', 'enables interactive search'
-  .option '-d, --detailed', 'return repo details'
+  .option '-b, --bare', 'return less information'
   .option '-o, --organisation [organisation]', 'git organisation to be browsed'
   .option '-c, --clone', 'provide interactive cloning of defined user/org repos'
   .option '--sort [criteria]', 'how to sort results [forks, stars, updated]'
@@ -41,7 +41,7 @@ else
       interactive: program.interactive
       organisation: program.organisation
       clone: program.clone
-      detailed: program.detailed
+      bare: program.bare
       sort: program.sort
       order: program.order
       limit: program.limit

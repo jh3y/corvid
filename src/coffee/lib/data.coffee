@@ -141,7 +141,6 @@ getErrCallback = ->
 #
 ###
 exports.getResults = getResults = (criteria)->
-  console.log 'grabbing data with ', criteria
   return new promise (resolve, reject) ->
     requestOptions = getRequestOptions criteria
     reposRequest = (if (requestOptions.url.indexOf('repos') isnt -1) then true else false)

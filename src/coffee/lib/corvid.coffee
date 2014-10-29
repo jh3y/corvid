@@ -51,6 +51,6 @@ exports.process = process = (options) ->
   searchCriteria = processSearchCriteria options
   if searchCriteria.repos or searchCriteria.username
     dataUtil.getResults(searchCriteria).then (data) ->
-      renderUtil.renderData data
+      renderUtil.renderData data, searchCriteria
   else
     throw new Error 'no username, organisation or repository criteria specified!'
