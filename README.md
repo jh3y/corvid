@@ -40,23 +40,23 @@ You can use corvid to browse users and repos whilst also cloning repos that you 
 ###Examples
 * Top 5 repos for users twbs
 
-      corvid -u twbs -r --limit 5
+        corvid -u twbs -r --limit 5
 
 * Search for users named Tom with over 1000 followers
 
-      corvid -u Tom --followers 1000
+        corvid -u Tom --followers 1000
 
 * Get data for user jh3y
 
-      corvid -u jh3y
+        corvid -u jh3y
 
 * Find users in New York who write CSS
 
-      corvid -u --language CSS --location "New York"
+        corvid -u --language CSS --location "New York"
 
 * Find CoffeeScript repos with over 1000 stars ordered by last updated
 
-      corvid -r --language CoffeeScript --stars 1000 --order updated
+        corvid -r --language CoffeeScript --stars 1000 --order updated
 
 
 ##Why make corvid?
