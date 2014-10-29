@@ -36,9 +36,7 @@ program.on '--help', ->
 
 program.parse process.argv
 
-if process.argv.length is 2
-  program.help()
-else
+startCorvid = ->
   try
     corvid.process
       all: program.all
@@ -58,3 +56,12 @@ else
       stars: program.stars
   catch err
     console.log '[', 'corvid'.white, ']', err.toString().red
+
+if process.argv.length is 2
+  program.help()
+else
+  if program.interactive
+    console.log 'lets go INTERACTIVE up in here'
+    startCorvid()
+  else
+    startCorvid()

@@ -169,5 +169,4 @@ exports.getResults = getResults = (criteria)->
           data: JSON.parse data
           renderAsRepos: reposRequest
     errCallback = getErrCallback()
-    console.log requestOptions.url, 'is where we are going'
     grab(requestOptions).then requestCallback, errCallback

@@ -23,14 +23,19 @@ exports.process = process = (repos) ->
     message: "Select repos to clone"
     name: "repos"
     choices: choices
+  ,
+    type: "confirm",
+    name: "confirmClone",
+    message: "are you sure you want to clone your chosen repos in the current directory (press ENTER for yes)?",
+    default: true
   ], (answers) ->
-    if answers.repos and answers.repos.length > 0
+    if answers.repos and answers.repos.length > 0 and answers.confirmClone
       for answer in answers.repos
         shell.exec('git clone ' + answer, silent: true, (code, output) ->
           console.log output.cyan
         )
       console.log '========================================'.cyan
-      console.log 'All chosen repos cloned'.cyan
+      console.log 'Chosen repos being cloned'.cyan
       console.log '========================================'.cyan
     else
       console.log '========================================'.cyan
