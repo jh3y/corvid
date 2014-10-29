@@ -1,11 +1,18 @@
 shell = require 'shelljs'
 inquirer = require 'inquirer'
+###
+#
+#  Clone Utilities
+#
+###
 
+###
+  @method process - processes repo data and provides interactive cloning
+  @params repos - repos to be listed for interactive clone
+###
 exports.process = process = (repos) ->
   if not shell.which 'git'
     throw new Error 'Git is required in order to clone repos'
-  console.log 'Git is installed'
-  console.log 'Lets clone repos!'
   choices = []
   for repo in repos
     choices.push

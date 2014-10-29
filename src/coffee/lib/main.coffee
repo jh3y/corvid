@@ -3,6 +3,13 @@ colors = require 'colors'
 pkg = require '../package.json'
 corvid = require './corvid'
 
+###
+#
+# Main entry point into corvid
+#
+###
+
+#TODO: Support created, pushed/updated
 program
   .version(pkg.version)
   .option '-a, --all', 'use if more than 100 repos'
@@ -20,7 +27,6 @@ program
   .option '--followers [followers]', 'amount of followers for a repo or user'
   .option '-f, --forks [forks]', 'amount of forks for repo'
   .option '-s, --stars [stars]', 'amount of stars for a repo'
-  #TODO: Support created, pushed/updated
 
 
 program.on '--help', ->

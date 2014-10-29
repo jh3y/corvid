@@ -1,14 +1,15 @@
-###
-#
-# Data Utilities for grabbing data simply or paged
-#
-###
 colors = require 'colors'
 request = require 'request'
 promise = require 'promise'
+###
+#
+# Data Utilities
+#
+###
 
 ###
-# GRAB - Our basic HTTP request method for data. Essentially, a request wrapped # in a promise
+  @method grab - used for making a data request
+  @params options - the request options including url and headers
 ###
 exports.grab = grab = (options) ->
   return new promise (resolve, reject) ->
@@ -20,8 +21,9 @@ exports.grab = grab = (options) ->
         return reject(new Error("Unexpected status code: " + r.statusCode + ', ' + body.message))
       resolve b
 ###
-# GRABPAGED - An function that will group grab promises into one promise for
-# grabbing paged data from the API
+  @method grabPaged - a paged version of grab that utilises grab to pull pages
+  @params options - the request options including url and headers
+  @params pages - the number of pages of data to be requested
 ###
 exports.grabPaged = grabPaged = (options, pages) ->
   pagedData = []
@@ -44,36 +46,31 @@ exports.grabPaged = grabPaged = (options, pages) ->
 
 
 ###
-# Variables for data requests
+  @method getUrlParameters - generate dynamic url for request options
+  @params criteria - user set options
+  @params qString - whether to build query string
+  @params order - whether to append ordering query to query string
+  @params sort - whether to append sorting query to query string
 ###
-
 getUrlParameters = (criteria, qString, order, sort) ->
   resPageLimit = 100
-
   genQueryString = ->
     regex = new RegExp ' ', 'g'
     queryObj = {}
     if criteria.username and typeof criteria.username is 'string'
-      # result += 'user:' + criteria.username
       queryObj.user = criteria.username
     if criteria.repos and typeof criteria.repos isnt 'boolean' and !isNaN parseInt(criteria.repos, 10)
-        # result += '+repos:%3E' + criteria.repos
         console.log typeof(parseInt(criteria.repos, 10))
         queryObj.repos = '%3E' + criteria.repos
     if criteria.location and typeof criteria.location is 'string'
-      # result += '+location:' + criteria.location.replace regex, '%2B'
       queryObj.location = criteria.location.replace regex, '%2B'
     if criteria.language and typeof criteria.language is 'string'
-      # result += '+language:' + criteria.language
       queryObj.language = criteria.language
     if criteria.followers and typeof criteria.followers isnt 'boolean' and typeof parseInt(criteria.followers, 10) is 'number'
-      # result += '+followers:%3E' + criteria.followers
       queryObj.followers = '%3E' + criteria.followers
     if criteria.forks and typeof criteria.repos isnt 'boolean' and typeof parseInt(criteria.forks, 10) is 'number'
-      # result += '+forks:%3E' + criteria.forks
       queryObj.forks = '%3E' + criteria.forks
     if criteria.stars and typeof criteria.stars isnt 'boolean' and typeof parseInt(criteria.stars, 10) is 'number'
-      # result += '+stars:%3E' + criteria.stars
       queryObj.stars = '%3E' + criteria.stars
     # TODO: Add created, size to query string
     result = '&q='
@@ -86,15 +83,12 @@ getUrlParameters = (criteria, qString, order, sort) ->
         result += '+' + key + ':' + queryObj[key]
     result
   parameterString = ''
-  if qString #q=user:jh3y+repo:whirl+language:CSS
+  if qString
     parameterString += genQueryString()
-  #&sort=[stars,forked,updated]
   if sort and criteria.sort and typeof criteria.sort is 'string'
     parameterString += '&sort=' + criteria.sort
-  #&order=[asc, desc]
   if order and criteria.order and typeof criteria.order is 'string'
     parameterString += '&order=' + criteria.order
-  #&per_page='resPageLimit'
   if criteria.limit and typeof criteria.limit isnt 'boolean' and typeof parseInt(criteria.limit, 10) is 'number'
     parameterString += '&per_page=' + criteria.limit
   else
@@ -102,7 +96,10 @@ getUrlParameters = (criteria, qString, order, sort) ->
     parameterString += '&per_page=' + resPageLimit
   parameterString
 
-
+###
+  @method hasCriteria - returns whether criteria related to query string
+  @params criteria - the user set criteria
+###
 hasCriteria = (criteria) ->
   hasCriteria = false
   if criteria.location or criteria.language or criteria.followers or criteria.forks or criteria.stars
@@ -111,7 +108,12 @@ hasCriteria = (criteria) ->
     hasCriteria = false
   hasCriteria
 
-getRequestOptions = (criteria) ->
+
+###
+  @method getRequestOptions - returns request options object for use with grab
+  @params criteria - the user set criteria
+###
+exports.getRequestOptions = getRequestOptions = (criteria) ->
   urlBase = 'https://api.github.com/'
   urlParameters = getUrlParameters criteria, true, true, true
   repoName = (if (typeof criteria.repos is 'string') then criteria.repos + '&' else '')
@@ -127,18 +129,25 @@ getRequestOptions = (criteria) ->
   else if criteria.username and typeof criteria.username is 'boolean' and hasCriteria criteria
     requestOptions.url = urlBase + 'search/users?' + urlParameters
   else if criteria.username and typeof criteria.username is 'string'
+    #NOTE: You have to swap out 'user:' otherwise the github API won't process
+    #TODO: Look at configuring this with with getUrlParameters function
+    requestOptions.url = urlBase + 'search/users?' + urlParameters.replace 'user:', ''
+  else if criteria.username and typeof criteria.username is 'string' and !hasCriteria criteria
     requestOptions.url = urlBase + 'users/' + criteria.username
   requestOptions
 
+
+###
+  @method getErrCallback - returns error callback for grab
+###
 getErrCallback = ->
   errCallback = (err) ->
     console.error err
   errCallback
 
 ###
-#
-# getResults - The entry point to the data module
-#
+  @method getResults - process criteria, make request and return data
+  @params criteria - user set criteria
 ###
 exports.getResults = getResults = (criteria)->
   return new promise (resolve, reject) ->

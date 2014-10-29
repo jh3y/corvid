@@ -4,6 +4,12 @@ cloneUtils = require './clone'
 # Rendering Utilities
 #
 ###
+
+###
+  @method renderRepo - logs repo information
+  @params repo - repository data
+  @params bare - set whether to return bare details
+###
 renderRepo = (repo, bare) ->
   console.log ''
   console.log '========================='.red
@@ -26,6 +32,11 @@ renderRepo = (repo, bare) ->
     console.log 'Last updated: '.white, new Date(repo.updated_at).toString().cyan
   console.log ''
 
+###
+  @method renderRepos - processes repo information for rendering
+  @params repoData - repository data
+  @params criteria - the user set options
+###
 renderRepos = (repoData, criteria) ->
   if repoData.items and repoData.items.length > 0 and criteria.clone
     try
@@ -45,6 +56,11 @@ renderRepos = (repoData, criteria) ->
   else
     throw new Error 'Incomplete DATA'
 
+###
+  @method renderUser - logs user information
+  @params user - user data
+  @params bare - set whether to return bare details
+###
 renderUser = (user, bare) ->
   console.log ' '
   console.log '========================='.red
@@ -72,7 +88,11 @@ renderUser = (user, bare) ->
     console.log 'Public gists: '.white, user.public_gists.toString().cyan
   console.log ' '
 
-
+###
+  @method renderUsers - processes user data for rendering
+  @params userData - user data
+  @params criteria - the user set options
+###
 renderUsers = (userData, criteria) ->
   if userData.items and userData.items.length > 0
     console.log '========================================'.cyan
@@ -98,7 +118,9 @@ renderUsers = (userData, criteria) ->
     throw new Error 'Incomplete DATA'
 
 ###
-# Entry point for rendering request data
+  @method renderData - entry point for rendering request data
+  @params data - the data returned
+  @params criteria - the user set options
 ###
 exports.renderData = renderData = (data, criteria) ->
   if data.renderAsRepos
