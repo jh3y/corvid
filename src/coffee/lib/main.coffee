@@ -61,8 +61,7 @@ if process.argv.length is 2
   program.help()
 else
   if program.interactive
-    console.log 'lets go INTERACTIVE up in here'
-    criteria = interactiveUtils.getCriteria()
-    # startCorvid criteria
+    interactiveUtils.getCriteria().then (data) ->
+      startCorvid data
   else
     startCorvid program
