@@ -12,26 +12,29 @@ interactiveUtils = require './interactive'
 #TODO: Support created, pushed/updated
 program
   .version(pkg.version)
-  .option '-a, --all', 'use if more than 100 repos'
-  .option '-u, --username [username]', 'git username to be browsed'
-  .option '-r, --repos [count]', 'flag for grabbing repos and also defining number of repos for user'
-  .option '-i, --interactive', 'enables interactive search'
-  .option '-b, --bare', 'return less information'
-  .option '-o, --organisation [organisation]', 'git organisation to be browsed'
+  .option '-a, --all', 'use if expecting more than 100 results'
+  .option '-u, --username [username]', 'git username'
+  .option '-r, --repos [count]', 'defines flag for grabbing repos, repo name or number of repos for user'
+  .option '-i, --interactive', 'enables interactive search criteria generation'
+  .option '-b, --bare', 'return less information in results'
   .option '-c, --clone', 'provide interactive cloning of user/org repos'
   .option '--sort [criteria]', 'how to sort results [forks, stars, updated]'
   .option '--order [order]', 'how to order results [asc, desc]'
   .option '-l, --limit [limit]', 'limit the number of results [< 100]'
-  .option '--location [location]', 'a location for a user'
-  .option '--language [language]', 'a language used by a user or in a repo'
-  .option '--followers [followers]', 'amount of followers for a repo or user'
-  .option '-f, --forks [forks]', 'amount of forks for repo'
-  .option '-s, --stars [stars]', 'amount of stars for a repo'
+  .option '--location [location]', 'location for a user'
+  .option '--language [language]', 'language for user or repo'
+  .option '--followers [followers]', 'minimum amount of followers for a repo or user'
+  .option '-f, --forks [forks]', 'minimum amount of forks for repo'
+  .option '-s, --stars [stars]', 'minimum amount of stars for a repo'
 
 
 program.on '--help', ->
   console.log '  Examples:'
-  console.log '    $ ' + pkg.name + ' --username jh3y'
+  console.log '    $ ' + pkg.name + ' -u jh3y'
+  console.log '    $ ' + pkg.name + ' -u twbs -r --limit 5'
+  console.log '    $ ' + pkg.name + ' -u Tom --followers 1000'
+  console.log '    $ ' + pkg.name + ' -u --language CSS --location "New York"'
+  console.log '    $ ' + pkg.name + ' -r --language CoffeeScript --stars 1000 --order updated'
   return
 
 program.parse process.argv
