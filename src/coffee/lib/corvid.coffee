@@ -18,8 +18,6 @@ resPageLimit = 100
 ###
 
 
-# https://api.github.com/search/users?q=tom+repos:%3E42+followers:%3E1000
-
 # TODO: repo or username can go into either search as a keyword term too.
 searchCriteria =
   all: `undefined`
