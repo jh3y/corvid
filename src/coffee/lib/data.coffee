@@ -101,12 +101,12 @@ getUrlParameters = (criteria, qString, order, sort) ->
   @params criteria - the user set criteria
 ###
 hasCriteria = (criteria) ->
-  hasCriteria = false
+  has = false
   if criteria.location or criteria.language or criteria.followers or criteria.forks or criteria.stars
-    hasCriteria = true
+    has = true
   else
-    hasCriteria = false
-  hasCriteria
+    has = false
+  has
 
 
 ###
@@ -120,19 +120,20 @@ exports.getRequestOptions = getRequestOptions = (criteria) ->
   requestOptions =
     headers:
       'User-Agent': 'request'
+  complex = hasCriteria criteria
   if criteria.all and criteria.username and typeof criteria.username is 'string' and criteria.repos
     requestOptions.url = urlBase + 'search/repositories?q=user:' + criteria.username + getUrlParameters criteria, false, false, false
   else if criteria.repos and isNaN parseInt(criteria.repos, 10) and typeof criteria.repos is 'boolean'
     requestOptions.url = urlBase + 'search/repositories?' + urlParameters
   else if criteria.repos and isNaN parseInt(criteria.repos, 10) and typeof criteria.repos is 'string'
     requestOptions.url = urlBase + 'search/repositories?' + criteria.repos + urlParameters
-  else if criteria.username and typeof criteria.username is 'boolean' and hasCriteria criteria
+  else if criteria.username and (typeof criteria.username is 'boolean') and complex
     requestOptions.url = urlBase + 'search/users?' + urlParameters
-  else if criteria.username and typeof criteria.username is 'string'
+  else if complex and criteria.username and (typeof criteria.username is 'string')
     #NOTE: You have to swap out 'user:' otherwise the github API won't process
     #TODO: Look at configuring this with with getUrlParameters function
     requestOptions.url = urlBase + 'search/users?' + urlParameters.replace 'user:', ''
-  else if criteria.username and typeof criteria.username is 'string' and !hasCriteria criteria
+  else if criteria.username and (typeof criteria.username is 'string') and !complex
     requestOptions.url = urlBase + 'users/' + criteria.username
   requestOptions
 
