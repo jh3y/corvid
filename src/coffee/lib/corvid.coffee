@@ -15,6 +15,7 @@ resPageLimit = 100
 
 searchCriteria =
   all: `undefined`
+  bare: `undefined`
   sort: `undefined` # stars, forks, updated
   order: `undefined` # asc, desc
   limit: `undefined` #limit to apply to results
