@@ -2,7 +2,7 @@ program = require 'commander'
 colors = require 'colors'
 pkg = require '../package.json'
 corvid = require './corvid'
-
+interactiveUtils = require './interactive'
 ###
 #
 # Main entry point into corvid
@@ -36,24 +36,24 @@ program.on '--help', ->
 
 program.parse process.argv
 
-startCorvid = ->
+startCorvid = (options) ->
   try
     corvid.process
-      all: program.all
-      username: program.username
-      repos: program.repos
-      interactive: program.interactive
-      organisation: program.organisation
-      clone: program.clone
-      bare: program.bare
-      sort: program.sort
-      order: program.order
-      limit: program.limit
-      location: program.location
-      language: program.language
-      followers: program.followers
-      forks: program.forks
-      stars: program.stars
+      all: options.all
+      username: options.username
+      repos: options.repos
+      interactive: options.interactive
+      organisation: options.organisation
+      clone: options.clone
+      bare: options.bare
+      sort: options.sort
+      order: options.order
+      limit: options.limit
+      location: options.location
+      language: options.language
+      followers: options.followers
+      forks: options.forks
+      stars: options.stars
   catch err
     console.log '[', 'corvid'.white, ']', err.toString().red
 
@@ -62,6 +62,7 @@ if process.argv.length is 2
 else
   if program.interactive
     console.log 'lets go INTERACTIVE up in here'
-    startCorvid()
+    criteria = interactiveUtils.getCriteria()
+    # startCorvid criteria
   else
-    startCorvid()
+    startCorvid program
