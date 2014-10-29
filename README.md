@@ -76,4 +76,5 @@ Are of course always welcome, so please leave an issue or tweet me @_jh3y !
 * Implement Github API request quota checker.
 
 
-@jh3y 2014
+
+__@jh3y__ 2014
