@@ -1,7 +1,7 @@
 {
   "name": "corvid",
   "description": "interactive CLI github API browser and cloning aid",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "homepage": "https://github.com/jh3y/corvid",
   "author": {
@@ -30,7 +30,11 @@
   },
   "dependencies": {
     "commander": "^2.2.0",
-    "colors": "^0.6.2"
+    "colors": "^0.6.2",
+    "inquirer": "^0.8.0",
+    "promise": "^6.0.0",
+    "request": "^2.45.0",
+    "shelljs": "^0.3.0"
   },
   "keywords": [],
   "devDependencies": {
@@ -38,10 +42,6 @@
     "gulp": "^3.6.1",
     "gulp-coffee": "^1.4.2",
     "gulp-plumber": "^0.6.1",
-    "inquirer": "^0.8.0",
     "mocha": "^2.0.1",
-    "promise": "^6.0.0",
-    "request": "^2.45.0",
-    "shelljs": "^0.3.0"
   }
 }
